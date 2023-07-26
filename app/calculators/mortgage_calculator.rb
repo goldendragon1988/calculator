@@ -33,7 +33,7 @@ class MortgageCalculator
 
   def calculate_monthly_mortgage
     loan_amount = BigDecimal(property_price - (property_price * down_payment / 100))
-    monthly_rate = annual_interest_rate / 100.0 / 12.0
+    monthly_rate = annual_interest_rate.to_d / 100.0 / 12.0
     term = amortization_period * 12
 
     loan_amount * (monthly_rate * (1 + monthly_rate)**term) / ((1 + monthly_rate)**term - 1)
