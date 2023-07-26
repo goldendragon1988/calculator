@@ -23,6 +23,7 @@ RSpec.configure do |config|
       },
       paths: {},
       servers: [
+        { url: 'https://calculator-101-c3264ca28660.herokuapp.com/' },
         {
           url: '{localHost}',
           variables: {
