@@ -1,24 +1,18 @@
-# README
+### README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app calculates your mortgage payments by bi-weekly, accelerated bi-weekly and monthly
 
-Things you may want to cover:
+API Documentation: [view]("")
+WEB App: [view]("")
 
-* Ruby version
+## How to run test
 
-* System dependencies
+```
+$ bundle exec spec
+```
 
-* Configuration
+## How to update api documentation
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+$ bundle exec rails rswag
+```
