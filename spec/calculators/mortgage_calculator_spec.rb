@@ -48,5 +48,13 @@ RSpec.describe MortgageCalculator, type: :model do
         expect(amount).to eq(242.69)
       end
     end
+
+    context 'when parameter is invalid' do
+      it 'should return a nil value' do
+        calculator.property_price = 0
+        amount = calculator.calculate
+        expect(amount).to eq(nil)
+      end
+    end
   end
 end
