@@ -8,7 +8,7 @@ API Documentation: [view](https://calculator-101-c3264ca28660.herokuapp.com/api-
 
 ## WEB
 
-WEB App: [view]("")
+WEB App: [view](https://calculator-web-jet.vercel.app)
 
 ## How to run test
 
