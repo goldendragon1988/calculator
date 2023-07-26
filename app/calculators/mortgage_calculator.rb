@@ -23,19 +23,18 @@ class MortgageCalculator
   private
 
   def calculate_mortgage
-    monthly_payment = calculate_monthly_mortgage
+    return calculate_payment(26) if payment_frequency == 'accelerated_bi_weekly'
 
-    return (monthly_payment * 13) / 26.0 if payment_frequency == 'accelerated_bi_weekly'
-    return (monthly_payment * 12) / 26.0 if payment_frequency == 'bi_weekly'
+    monthly_payment = calculate_payment
 
-    monthly_payment
+    payment_frequency == 'monthly' ? monthly_payment : monthly_payment / 2.0
   end
 
-  def calculate_monthly_mortgage
+  def calculate_payment(payments_in_year = 12)
     loan_amount = BigDecimal(property_price - (property_price * down_payment / 100))
-    monthly_rate = annual_interest_rate.to_d / 100.0 / 12.0
-    term = amortization_period * 12
+    rate = annual_interest_rate.to_d / 100 / payments_in_year
+    term = amortization_period * payments_in_year
 
-    loan_amount * (monthly_rate * (1 + monthly_rate)**term) / ((1 + monthly_rate)**term - 1)
+    loan_amount * (rate * (1 + rate)**term) / ((1 + rate)**term - 1)
   end
 end
