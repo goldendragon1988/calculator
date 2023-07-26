@@ -5,6 +5,7 @@ class MortgageCalculator
   include ActiveModel::Model
 
   PAYMENT_FREQUENCY = %w[accelerated_bi_weekly bi_weekly monthly].freeze
+  PAYMENTS_IN_YEAR = { accelerated_bi_weekly: 26, bi_weekly: 24, monthly: 12 }.freeze
 
   attr_accessor :property_price, :down_payment, :annual_interest_rate, :amortization_period, :payment_frequency
 
@@ -23,18 +24,22 @@ class MortgageCalculator
   private
 
   def calculate_mortgage
-    return calculate_payment(26) if payment_frequency == 'accelerated_bi_weekly'
-
-    monthly_payment = calculate_payment
-
-    payment_frequency == 'monthly' ? monthly_payment : monthly_payment / 2.0
+    loan_amount * (rate * (1 + rate)**term) / ((1 + rate)**term - 1)
   end
 
-  def calculate_payment(payments_in_year = 12)
-    loan_amount = BigDecimal(property_price - (property_price * down_payment / 100))
-    rate = annual_interest_rate.to_d / 100 / payments_in_year
-    term = amortization_period * payments_in_year
+  def loan_amount
+    BigDecimal(property_price - (property_price * down_payment / 100))
+  end
 
-    loan_amount * (rate * (1 + rate)**term) / ((1 + rate)**term - 1)
+  def term
+    amortization_period * payments_in_year
+  end
+
+  def rate
+    annual_interest_rate.to_d / 100 / payments_in_year
+  end
+
+  def payments_in_year
+    PAYMENTS_IN_YEAR[payment_frequency.to_sym]
   end
 end

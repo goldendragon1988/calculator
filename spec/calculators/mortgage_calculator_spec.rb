@@ -37,7 +37,7 @@ RSpec.describe MortgageCalculator, type: :model do
       it 'should return bi-weekly payment' do
         calculator.payment_frequency = 'bi_weekly'
         amount = calculator.calculate
-        expect(amount).to eq(263.07)
+        expect(amount).to eq(262.93)
       end
     end
 
