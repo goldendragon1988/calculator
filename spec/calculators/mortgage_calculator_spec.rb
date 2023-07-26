@@ -19,7 +19,10 @@ RSpec.describe MortgageCalculator, type: :model do
 
   describe 'custom validations' do
     let(:calculator) do
-      MortgageCalculator.new(property_price: 100_000, down_payment: 5000, annual_interest_rate: 5, amortization_period: 25,
+      MortgageCalculator.new(property_price: 100_000,
+                             down_payment: 5000,
+                             annual_interest_rate: 5,
+                             amortization_period: 25,
                              payment_frequency: 'monthly')
     end
 
@@ -39,6 +42,41 @@ RSpec.describe MortgageCalculator, type: :model do
       calculator.down_payment = 1000
       calculator.valid?
       expect(calculator.errors[:down_payment]).to include("can't be less than 5% of property price")
+    end
+  end
+
+  describe '#calculate' do
+    let(:calculator) do
+      MortgageCalculator.new(property_price: 100_000,
+                             down_payment: 5000,
+                             annual_interest_rate: 5,
+                             amortization_period: 25,
+                             payment_frequency: 'monthly')
+    end
+
+    context 'when payment frequency is monthly' do
+      it 'should return monthly payment' do
+        amount = calculator.calculate
+
+        expect(amount).to eq(555.36)
+      end
+    end
+
+    context 'when payment frequency is bi-weekly' do
+      it 'should return bi-weekly payment' do
+        calculator.payment_frequency = 'bi_weekly'
+        amount = calculator.calculate
+        expect(amount).to eq(256.32)
+      end
+    end
+
+    context 'when payment frequency is accelerated bi-weekly' do
+      it 'should return accelerated bi-weekly payment' do
+        calculator.payment_frequency = 'accelarated_bi_weekly'
+        amount = calculator.calculate
+
+        expect(amount).to eq(277.68)
+      end
     end
   end
 end

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# Calculator for mortgage
 class MortgageCalculator
   include ActiveModel::Model
 
-  PAYMENT_FREQUENCY = %w[weekly bi-weekly monthly]
+  PAYMENT_FREQUENCY = %w[accelarated_bi_weekly bi_weekly monthly].freeze
 
   attr_accessor :property_price, :down_payment, :annual_interest_rate, :amortization_period, :payment_frequency
 
@@ -14,12 +17,29 @@ class MortgageCalculator
   validate :down_payment_price_check, if: -> { down_payment.present? && property_price.present? }
 
   def calculate
-    calculate_mortgage unless valid?
+    calculate_mortgage.round(2) if valid?
   end
 
   private
 
-  def calculate_mortgage; end
+  def calculate_mortgage
+    monthly_payment = calculate_monthly_mortgage
+
+    return (monthly_payment * 13) / 26.0 if payment_frequency == 'accelarated_bi_weekly'
+    return (monthly_payment * 12) / 26.0 if payment_frequency == 'bi_weekly'
+
+    monthly_payment
+  end
+
+  def calculate_monthly_mortgage
+    loan_amount = BigDecimal(property_price - down_payment)
+    monthly_rate = annual_interest_rate / 100.0 / 12.0
+    term = amortization_period * 12
+
+    loan_amount * (monthly_rate * (1 + monthly_rate)**term) / ((1 + monthly_rate)**term - 1)
+  end
+
+  def formula(term); end
 
   def down_payment_price_check
     messages = []
