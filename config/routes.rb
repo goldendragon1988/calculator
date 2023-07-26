@@ -5,4 +5,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  scope :api, defaults: { format: :json } do
+    namespace :v1 do
+      post :calculate, to: 'calculators#calculate'
+    end
+  end
 end

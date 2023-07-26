@@ -4,7 +4,7 @@
 class MortgageCalculator
   include ActiveModel::Model
 
-  PAYMENT_FREQUENCY = %w[accelarated_bi_weekly bi_weekly monthly].freeze
+  PAYMENT_FREQUENCY = %w[accelerated_bi_weekly bi_weekly monthly].freeze
 
   attr_accessor :property_price, :down_payment, :annual_interest_rate, :amortization_period, :payment_frequency
 
@@ -25,7 +25,7 @@ class MortgageCalculator
   def calculate_mortgage
     monthly_payment = calculate_monthly_mortgage
 
-    return (monthly_payment * 13) / 26.0 if payment_frequency == 'accelarated_bi_weekly'
+    return (monthly_payment * 13) / 26.0 if payment_frequency == 'accelerated_bi_weekly'
     return (monthly_payment * 12) / 26.0 if payment_frequency == 'bi_weekly'
 
     monthly_payment

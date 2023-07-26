@@ -1,0 +1,42 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/calculate":
+    post:
+      summary: calculate
+      tags:
+      - Calculators
+      parameters: []
+      responses:
+        '200':
+          description: returns the mortgage payment
+        '422':
+          description: returns error message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                property_price:
+                  type: number
+                down_payment:
+                  type: number
+                annual_interest_rate:
+                  type: number
+                amortization_period:
+                  type: number
+                payment_frequency:
+                  type: string
+                  enum:
+                  - accelerated_bi_weekly
+                  - bi_weekly
+                  - monthly
+servers:
+- url: "{localHost}"
+  variables:
+    localHost:
+      default: http://localhost:3000
